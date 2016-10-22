@@ -9,3 +9,25 @@
 .externalNativeBuild
 /app/proguard-rules.pro
 /app/src/debug/res/values/google_maps_api.xml
+.idea/BRA+F hackaton.time
+.idea/BRA+Fhackaton.time
+.idea/compiler.xml
+.idea/copyright/
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/runConfigurations.xml
+app/libs/
+app/src/androidTest/
+app/src/main/res/drawable/
+app/src/main/res/mipmap-hdpi/
+app/src/main/res/mipmap-mdpi/
+app/src/main/res/mipmap-xhdpi/
+app/src/main/res/mipmap-xxhdpi/
+app/src/main/res/mipmap-xxxhdpi/
+app/src/release/
+app/src/test/
+gradle/
+libs/
+/app/src/release/res/values/google_maps_api.xml
