@@ -2,6 +2,7 @@ package abm.ant8.brafhackaton
 
 import android.support.v4.app.FragmentActivity
 import android.os.Bundle
+import android.util.Log
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,11 +34,13 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
+        Log.d("BRAF", "uruchomiłem callbacka")
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap!!.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val warsaw = LatLng(52.0, 21.0)
+//        mMap!!.addMarker(MarkerOptions().position(warsaw).title("Marker in Warsaw"))
+        Log.d("BRAF", "${(mMap != null).toString()} ")
+        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(warsaw))
     }
 }
