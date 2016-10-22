@@ -39,6 +39,7 @@ dependencies {
     compile('com.github.eoinsha:JavaPhoenixChannels:0.2') {
         exclude module: 'groovy-all'
     }
+    compile 'com.google.android.gms:play-services-location:8.4.0'
 }
 repositories {
     mavenCentral()
