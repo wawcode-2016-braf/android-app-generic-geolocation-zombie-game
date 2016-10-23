@@ -29,6 +29,7 @@ class LogoutActivity : AppCompatActivity() {
                 button("wyloguj się") {
                     onClick {
                         startActivity<LoginActivity>()
+                        finish()
                     }
                     textColor = ContextCompat.getColor(ctx, R.color.textColor)
                     backgroundColor = ContextCompat.getColor(ctx, R.color.buttonColour)

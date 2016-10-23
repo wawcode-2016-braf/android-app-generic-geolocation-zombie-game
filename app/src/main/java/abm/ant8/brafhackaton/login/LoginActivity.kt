@@ -45,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
                                 startActivity<MapsActivity>("token" to loginData.data.token, "role" to loginData.data.role, "name" to loginData.data.name, "id" to loginData.data.id)
                             }
                         }
+                        finish()
                     }
                     textColor = ContextCompat.getColor(ctx, R.color.textColor)
                     backgroundColor = ContextCompat.getColor(ctx, R.color.buttonColour)
