@@ -1,21 +1,32 @@
 package abm.ant8.brafhackaton
 
-import android.app.IntentService
+import abm.ant8.brafhackaton.game.UserLocationServiceCallback
+import android.app.Service
 import android.content.Intent
+import android.os.Binder
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
+import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.doAsync
 import java.net.URL
 
-class UserLocationService : IntentService("UserLocationService") {
+class UserLocationService : Service(), AnkoLogger {
+    private val mBinder = LocalBinder()
     private var mGoogleApiClient: GoogleApiClient? = null
     private var googleApiConnected: Boolean = false
+    lateinit private var token: String
+    lateinit var callback: UserLocationServiceCallback
 
-    override fun onHandleIntent(p0: Intent?) {
+    override fun onBind(p0: Intent?): IBinder {
+        token = p0?.extras?.getString("token") ?: ""
+        Log.d("dupa", "usluga w ogole startuje onbind, tokien to $token")
+        Log.d("dupa", "sledzenie!")
         if (mGoogleApiClient == null) {
             mGoogleApiClient = GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
@@ -25,13 +36,13 @@ class UserLocationService : IntentService("UserLocationService") {
                                 location ->
                                 run {
                                     Log.d("dupa", "lokalizacja dostana, ${location.latitude}, ${location.longitude}")
+                                    callback.getMyPosition(LatLng(location.latitude, location.longitude))
                                     doAsync {
                                         Log.d("dupa", "get to ${URL("http://isup.me").readText()}")
                                     }
                                 }
                             }
                             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, locationListener)
-
 
                             var mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                                     mGoogleApiClient)
@@ -57,6 +68,19 @@ class UserLocationService : IntentService("UserLocationService") {
                 mGoogleApiClient?.connect()
             }
         }
+
+        return mBinder
+    }
+
+    inner class LocalBinder : Binder() {
+        internal
+        val service: UserLocationService
+            get() = this@UserLocationService
+
+    }
+
+    fun startTracking() {
+
     }
 
     override fun onDestroy() {
