@@ -21,39 +21,12 @@ import org.jetbrains.anko.toast
 class MapsActivity : FragmentActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
-    private var mGoogleApiClient: GoogleApiClient? = null
-    private var googleApiConnected: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
         Log.d("dupa", "proba utworzenia klienta")
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
-                        override fun onConnected(p0: Bundle?) {
-                            Log.d("BRAF", "połączono")
-                            var mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                                    mGoogleApiClient)
-                            val locationRequest = LocationRequest.create().setFastestInterval(1000).setInterval(10000)
-                            val locationListener = LocationListener { Log.d("dupa", "lokalizacja dostana") }
-                            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, locationListener)
-                            if (mLastLocation != null) {
-                                ctx.toast(mLastLocation.getLatitude().toString())
-                                Log.d("dupa", mLastLocation.getLatitude().toString())
-                                ctx.toast(mLastLocation.getLongitude().toString())
-                                Log.d("dupa", mLastLocation.getLongitude().toString())
-                            }
-                        }
-                        override fun onConnectionSuspended(p0: Int) {
-                            Log.d("BRAF", "zawieszono")
-                        }
-                    })
-                    .addOnConnectionFailedListener { toast("błąd komunikacji z serwerem") }
-                    .addApi(LocationServices.API)
-                    .build()
-        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -70,13 +43,11 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     }
 
     override protected fun onStop() {
-        mGoogleApiClient?.disconnect()
         super.onStop()
     }
 
     override fun onStart() {
         Log.d("dupa", "proba polaczenia z klientem")
-        mGoogleApiClient?.connect()
         super.onStart()
     }
     /**
