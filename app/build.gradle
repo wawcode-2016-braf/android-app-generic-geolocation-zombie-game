@@ -40,6 +40,7 @@ dependencies {
         exclude module: 'groovy-all'
     }
     compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.3"
 }
 repositories {
     mavenCentral()
