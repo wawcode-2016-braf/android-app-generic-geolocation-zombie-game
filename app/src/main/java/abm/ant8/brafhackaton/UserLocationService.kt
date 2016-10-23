@@ -38,7 +38,8 @@ class UserLocationService : Service(), AnkoLogger {
                                     Log.d("dupa", "lokalizacja dostana, ${location.latitude}, ${location.longitude}")
                                     callback.getMyPosition(LatLng(location.latitude, location.longitude))
                                     doAsync {
-                                        Log.d("dupa", "get to ${URL("http://isup.me").readText()}")
+                                        val response = URL("https://immense-wave-80129.herokuapp.com/api/game?token=$token").readText()
+                                        Log.d("dupa", "${URL("http://isup.me").readText()}")
                                     }
                                 }
                             }

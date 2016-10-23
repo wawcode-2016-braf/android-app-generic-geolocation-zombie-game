@@ -17,8 +17,9 @@
         android:label="Przetrwanie"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".login.LoginActivity"
-                  android:screenOrientation="nosensor">
+        <activity
+            android:name=".login.LoginActivity"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -47,6 +48,11 @@
         </activity>
 
         <service android:name=".UserLocationService"/>
+
+        <activity android:name=".login.LogoutActivity"
+                  android:screenOrientation="nosensor">
+
+        </activity>
     </application>
 
 </manifest>

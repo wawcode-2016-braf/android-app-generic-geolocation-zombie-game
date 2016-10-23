@@ -1,6 +1,7 @@
 package abm.ant8.brafhackaton
 
 import abm.ant8.brafhackaton.game.UserLocationServiceCallback
+import abm.ant8.brafhackaton.login.LogoutActivity
 import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
@@ -13,7 +14,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.*
 
 class MapsActivity : FragmentActivity(), OnMapReadyCallback, UserLocationServiceCallback {
     override fun getMyPosition(myPosition: LatLng) {
@@ -70,5 +71,13 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback, UserLocationService
 
     override fun showPositions(survivorPosition: List<LatLng>, zombiePositions: List<LatLng>) {
 
+    }
+
+    override fun onBackPressed() {
+        if (token.isNotBlank()) {
+            startActivity<LogoutActivity>()
+            finish()
+        }
+        else super.onBackPressed()
     }
 }
