@@ -9,6 +9,7 @@ import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import org.jetbrains.anko.doAsync
+import java.net.URL
 
 class UserLocationService : IntentService("UserLocationService") {
     private var mGoogleApiClient: GoogleApiClient? = null
@@ -19,11 +20,16 @@ class UserLocationService : IntentService("UserLocationService") {
             mGoogleApiClient = GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
                         override fun onConnected(p0: Bundle?) {
-                            Log.d("dupa", "polaczono")
-
-                            val locationRequest = LocationRequest.create().setFastestInterval(1000).setInterval(10000)
-                            val locationListener = LocationListener { Log.d("dupa", "lokalizacja dostana") }
+                            val locationRequest = LocationRequest.create().setFastestInterval(Globals.fastestIntervalInMillis).setInterval(Globals.intervalInMillis)
+                            val locationListener = LocationListener {
+                                location -> run{
+                                                Log.d("dupa", "lokalizacja dostana, ${location.latitude}, ${location.longitude}")
+                                                doAsync {
+                                                    Log.d("dupa", "get to ${URL("http://isup.me").readText()}")
+                                                }
+                                                } }
                             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, locationListener)
+
 
                             var mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                                     mGoogleApiClient)
@@ -47,7 +53,6 @@ class UserLocationService : IntentService("UserLocationService") {
             while(mGoogleApiClient?.isConnected != true) {
                 Thread.sleep(500)
                 mGoogleApiClient?.connect()
-                Log.d("dupa", "${mGoogleApiClient?.isConnected} ${mGoogleApiClient?.isConnecting} ")
             }
         }
     }

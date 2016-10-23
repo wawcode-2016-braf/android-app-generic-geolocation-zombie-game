@@ -9,6 +9,16 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startActivity<MapsActivity>()
+        linearLayout {
+            val playerNameView = editText {
+                hint = "Twój nick"
+            }
+            button("zaloguj") {
+                onClick {
+                    startActivity<MapsActivity>("token" to "123", "role" to "czlowiek", "name" to playerNameView.text.toString())
+                }
+            }
+        }
+
     }
 }
