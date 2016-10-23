@@ -31,3 +31,4 @@ app/src/test/
 gradle/
 libs/
 /app/src/release/res/values/google_maps_api.xml
+/app/src/main/res/layout/login_activity.xml

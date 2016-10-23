@@ -22,12 +22,14 @@ class UserLocationService : IntentService("UserLocationService") {
                         override fun onConnected(p0: Bundle?) {
                             val locationRequest = LocationRequest.create().setFastestInterval(Globals.fastestIntervalInMillis).setInterval(Globals.intervalInMillis)
                             val locationListener = LocationListener {
-                                location -> run{
-                                                Log.d("dupa", "lokalizacja dostana, ${location.latitude}, ${location.longitude}")
-                                                doAsync {
-                                                    Log.d("dupa", "get to ${URL("http://isup.me").readText()}")
-                                                }
-                                                } }
+                                location ->
+                                run {
+                                    Log.d("dupa", "lokalizacja dostana, ${location.latitude}, ${location.longitude}")
+                                    doAsync {
+                                        Log.d("dupa", "get to ${URL("http://isup.me").readText()}")
+                                    }
+                                }
+                            }
                             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, locationListener)
 
 
