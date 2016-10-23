@@ -8,16 +8,13 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import org.jetbrains.anko.ctx
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
 
 class UserLocationService : IntentService("UserLocationService") {
     private var mGoogleApiClient: GoogleApiClient? = null
     private var googleApiConnected: Boolean = false
 
     override fun onHandleIntent(p0: Intent?) {
-//        Log.d("dupa", "${mGoogleApiClient == null}")
         if (mGoogleApiClient == null) {
             mGoogleApiClient = GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
@@ -53,19 +50,9 @@ class UserLocationService : IntentService("UserLocationService") {
                 Log.d("dupa", "${mGoogleApiClient?.isConnected} ${mGoogleApiClient?.isConnecting} ")
             }
         }
-//
-        Log.d("dupa", "handle intent")
     }
 
     override fun onDestroy() {
-        Log.d("dupa", "usluga zatrzymana")
         mGoogleApiClient?.disconnect()
-        Log.d("dupa", "${mGoogleApiClient?.isConnected} ${mGoogleApiClient?.isConnecting} ")
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("dupa", "usluga wystartowana - on start command")
-
-        return super.onStartCommand(intent, flags, startId)
     }
 }
