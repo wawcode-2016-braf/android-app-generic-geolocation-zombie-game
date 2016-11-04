@@ -48,7 +48,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback, UserLocationService
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-        Log.d("dupa", "twoja rola to ${this.intent.extras.get("role")}")
+        Log.d("zombiaki", "twoja rola to ${this.intent.extras.get("role")}")
         token = this.intent.extras.getString("token")
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -56,14 +56,13 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback, UserLocationService
 
         this.applicationContext.bindService(intentFor<UserLocationService>("token" to token), serviceConnection, Context.BIND_AUTO_CREATE)
 
-//        this.applicationContext.startService<UserLocationService>()
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
         // Add a marker in Warsaw and move the camera
-        val warsaw = LatLng(52.0, 21.0)
+        val warsaw = LatLng(52.2, 21.0)
         mMap.addMarker(MarkerOptions().position(warsaw).title("Marker in Warsaw"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(warsaw))
         mMap.moveCamera(CameraUpdateFactory.zoomTo(12.0f))

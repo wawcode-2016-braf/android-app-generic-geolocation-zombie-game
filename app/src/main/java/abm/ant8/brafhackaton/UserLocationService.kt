@@ -1,12 +1,15 @@
 package abm.ant8.brafhackaton
 
-import abm.ant8.brafhackaton.game.UserLocationServiceCallback
+import abm.ant8.brafhackaton.game.*
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import com.fasterxml.jackson.databind.PropertyNamingStrategy
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
@@ -19,14 +22,16 @@ import java.net.URL
 class UserLocationService : Service(), AnkoLogger {
     private val mBinder = LocalBinder()
     private var mGoogleApiClient: GoogleApiClient? = null
-    private var googleApiConnected: Boolean = false
     lateinit private var token: String
     lateinit var callback: UserLocationServiceCallback
 
     override fun onBind(p0: Intent?): IBinder {
         token = p0?.extras?.getString("token") ?: ""
-        Log.d("dupa", "usluga w ogole startuje onbind, tokien to $token")
-        Log.d("dupa", "sledzenie!")
+        Log.d("zombiaki", "sledzenie!")
+        val mapper = jacksonObjectMapper()
+                .setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE)
+//                setDateFormat()
+
         if (mGoogleApiClient == null) {
             mGoogleApiClient = GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
@@ -35,30 +40,24 @@ class UserLocationService : Service(), AnkoLogger {
                             val locationListener = LocationListener {
                                 location ->
                                 run {
-                                    Log.d("dupa", "lokalizacja dostana, ${location.latitude}, ${location.longitude}")
+                                    Log.d("zombiaki", "lokalizacja dostana, ${location.latitude}, ${location.longitude}")
                                     callback.getMyPosition(LatLng(location.latitude, location.longitude))
                                     doAsync {
                                         val response = URL("https://immense-wave-80129.herokuapp.com/api/game?token=$token").readText()
-                                        Log.d("dupa", "${URL("http://isup.me").readText()}")
+                                        val gameWrapper = mapper.readValue<GameWrapper>(response)
+                                        Log.d("zombiaki", "$response")
+                                        Log.d("zombiaki", "${gameWrapper.info.startDate}")
                                     }
                                 }
                             }
                             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, locationRequest, locationListener)
-
-                            var mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                                    mGoogleApiClient)
-//                            ctx.toast(mLastLocation?.getLatitude().toString())
-                            Log.d("dupa", mLastLocation?.getLatitude().toString())
-//                            ctx.toast(mLastLocation?.getLongitude().toString())
-                            Log.d("dupa", mLastLocation?.getLongitude().toString())
-                            if (mLastLocation != null) googleApiConnected = true
                         }
 
                         override fun onConnectionSuspended(p0: Int) {
-                            Log.d("dupa", "zawieszono")
+                            Log.d("zombiaki", "zawieszono")
                         }
                     })
-                    .addOnConnectionFailedListener { Log.d("dupa", "błąd komunikacji z serwerem") }
+                    .addOnConnectionFailedListener { Log.d("zombiaki", "błąd komunikacji z serwerem") }
                     .addApi(LocationServices.API)
                     .build()
         }
@@ -77,10 +76,6 @@ class UserLocationService : Service(), AnkoLogger {
         internal
         val service: UserLocationService
             get() = this@UserLocationService
-
-    }
-
-    fun startTracking() {
 
     }
 

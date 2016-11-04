@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.jetbrains.anko.*
@@ -40,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
                     onClick {
                         doAsync {
                             val response = URL("https://immense-wave-80129.herokuapp.com/api/token/${playerNameView.text}").readText()
+                            Log.d("zombiaki", "włączam syfsko z małpą, odp to $response")
                             val loginData: LoginData = mapper.readValue(response)
                             uiThread {
                                 startActivity<MapsActivity>("token" to loginData.data.token, "role" to loginData.data.role, "name" to loginData.data.name, "id" to loginData.data.id)
